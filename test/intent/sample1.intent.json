@@ -1,0 +1,7 @@
+{
+  "utterance": "change wallpaper",
+  "intent_type": "UnsplashKeywordIntent",
+  "intent": {
+    "UnsplashPlasmaDesktopSkillKeyword": "type"
+  }
+}

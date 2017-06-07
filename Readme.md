@@ -22,7 +22,7 @@ This skill allows users to use unsplash images as wallpapers based on their cate
 - Python Dbus and Python Psutil package is required and copying the Python Dbus folder and lib from your system python install over to /home/$USER/.virtualenvs/mycroft/lib/python2.7/site-packages/.
 
 ##### How To Use: 
-###### Play Music/Song
+
 - "Hey Mycroft, change wallpaper type aircrafts"
 - "Hey Mycroft, change wallpaper abstract"
 - "Hey Mycroft, new wallpaper type nature"

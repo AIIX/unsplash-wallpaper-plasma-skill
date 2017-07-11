@@ -1,11 +1,11 @@
-# mycroft-unsplash-wallpaper-plasma-skill
+# unsplash-wallpaper-plasma-skill
 This skill allows users to use unsplash images as wallpapers based on their category of choice (nature, sports, aircrafts, etc) on the plasma desktop.
 
 #### Installation of skill:
 * Download or Clone Git
 * Create /opt/mycroft/skills folder if it does not exist
-* Extract Downloaded Skill into a folder. "mycroft-unsplash-wallpaper-plasma-skill". (Clone does not require this step)
-* Copy the mycroft-unsplash-wallpaper-plasma-skill folder to /opt/mycroft/skills/ folder
+* Extract Downloaded Skill into a folder. "unsplash-wallpaper-plasma-skill". (Clone does not require this step)
+* Copy the unsplash-wallpaper-plasma-skill folder to /opt/mycroft/skills/ folder
 
 #### Installation of requirements:
 ##### Fedora: 

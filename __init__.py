@@ -4,7 +4,7 @@ import requests
 import random
 import os
 import time
-from bs4 import BeautifulSoup
+from io import open as iopen
 from traceback import print_exc
 from os.path import dirname
 from adapt.intent import IntentBuilder
@@ -36,35 +36,27 @@ class UnsplashPlasmaWallpaperSkill(MycroftSkill):
                 message.data.get('UnsplashPlasmaDesktopSkillKeyword'), '')
         searchString = utterance
         rawrinpt = str(searchString)
-        url = 'https://unsplash.com/search/' + rawrinpt
-        i = int(1)
-        cut = 20
-        baseURL = 'https://unsplash.com/'
-        soup = BeautifulSoup(requests.get(url).text, 'html.parser')
-        data = soup.findAll(
-                'a',
-                attrs={
-                    'class': '_23lr1'
-                }
-        )
-        img = random.choice(data)
-        fullHREF = img.get('href')
-        fileSave = fullHREF[cut:]
-        link = '{}{}/download'.format(baseURL[:-1], fullHREF)
-        ossep = os.path.sep
-        directory = os.path.realpath(os.getcwd() + ossep + "pictures" + ossep)
-        if not os.path.exists(directory):
-            time.sleep(1)
-            os.makedirs(directory)
+        category = rawrinpt
+        size = '1920x1080'
+        file_url = 'https://source.unsplash.com/' + size + '/' + '?' + category
+        suffix_random = str(random.randint(1111,9999))
+        file_name = category + suffix_random
+        i = requests.get(file_url)
+        if i.status_code == requests.codes.ok:            
+            ossep = os.path.sep
+            directory = os.path.realpath(os.getcwd() + ossep + "pictures" + ossep)
+            if not os.path.exists(directory):
+                time.sleep(1)
+                os.makedirs(directory)
             
+            with iopen(directory + ossep + file_name + '.jpg', 'wb') as file:
+                file.write(i.content)
+                file.close()
+                
         currdir = os.getcwd()
-        f = open(directory + ossep + fileSave + '.jpg', 'wb')
-        f.write(requests.get(link).content)
-        f.close()
-        
         bus = dbus.SessionBus()
         remote_object = bus.get_object("org.kde.plasmashell","/PlasmaShell") 
-        remote_object.evaluateScript('var allDesktops = desktops();print (allDesktops);for (i=0;i<allDesktops.length;i++) {d = allDesktops[i];d.wallpaperPlugin = "org.kde.image";d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General");d.writeConfig("Image", "file://' + currdir + '/pictures/' + fileSave + '.jpg' + '")}', dbus_interface = "org.kde.PlasmaShell")
+        remote_object.evaluateScript('var allDesktops = desktops();print (allDesktops);for (i=0;i<allDesktops.length;i++) {d = allDesktops[i];d.wallpaperPlugin = "org.kde.image";d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General");d.writeConfig("Image", "file://' + currdir + '/pictures/' + file_name + '.jpg' + '")}', dbus_interface = "org.kde.PlasmaShell")
         
         #self.speak_dialog("krunner.search", data={'Query': searchString})
 

@@ -8,7 +8,7 @@ from io import open as iopen
 from traceback import print_exc
 from os.path import dirname
 from adapt.intent import IntentBuilder
-from mycroft.skills.core import MycroftSkill
+from mycroft.skills.core import MycroftSkill, intent_handler
 from mycroft.util.log import getLogger
 
 __author__ = 'aix'
@@ -21,15 +21,7 @@ class UnsplashPlasmaWallpaperSkill(MycroftSkill):
     def __init__(self):
         super(UnsplashPlasmaWallpaperSkill, self).__init__(name="UnsplashPlasmaWallpaperSkill")
         
-    # This method loads the files needed for the skill's functioning, and
-    # creates and registers each intent that the skill uses
-    def initialize(self):
-        self.load_data_files(dirname(__file__))
-
-        unsplash_plasma_desktopskill_intent = IntentBuilder("UnsplashKeywordIntent").\
-            require("UnsplashPlasmaDesktopSkillKeyword").build()
-        self.register_intent(unsplash_plasma_desktopskill_intent, self.handle_unsplash_plasma_desktopskill_intent)
-        
+    @intent_handler(IntentBuilder("UnsplashKeywordIntent").require("UnsplashPlasmaDesktopSkillKeyword").build())        
     def handle_unsplash_plasma_desktopskill_intent(self, message):
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(
